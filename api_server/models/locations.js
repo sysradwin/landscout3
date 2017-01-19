@@ -62,22 +62,21 @@ var locationSchema = new mongoose.Schema({
         required: true
     },
     address: String,
-    rating: {
-        type: Number,
-        "default": 0,
-        min: 0,
-        max: 5
-    },
+    // rating: {
+    //     type: Number,
+    //     "default": 0,
+    //     min: 0,
+    //     max: 5
+    // },
     activities: [String],
     // Always store coordinates longitude, latitude order.
     coords: {
         type: [Number],
         index: '2dsphere',
-        required: true
     },
     availableSeason: [availableSeasonSchema],
-    stayOptions: [stayOptionsSchema],
-    reviews: [reviewSchema]
+    // stayOptions: [stayOptionsSchema],
+    // reviews: [reviewSchema]
 });
 
 mongoose.model('Location', locationSchema);

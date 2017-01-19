@@ -31,36 +31,38 @@ var sendJSONresponse = function(res, status, content) {
 
 // CREATE/POST NEW LOCATION
 module.exports.locationsCreate = function(req, res) {
-  console.log(req.body)
+
+
   Loc.create({
-    name: req.body.name,
-    address: req.body.address,
-    activities: req.body.activities,
-    coords: [parseFloat(req.body.lng), parseFloat(req.body.lat)],
+    name: req.body.locationToAPI,
+    address: req.body.addressToAPI,
+    activities: req.body.activitiesToAPI.split(","),
+    coords: req.body.coords,
     availableSeason: [{
       openingDate: req.body.openingDate,
       closingDate: req.body.closingDate
     }],
-    // This needs to be made into a loop for multiple stay locations
-    stayOptions: [{
-      placeName: req.body.placeName,
-      indoorOutdoor: req.body.indoorOutdoor,
-      squareAcres: req.body.squareAcres,
-      bedrooms: req.body.bedrooms,
-      bathrooms: req.body.bathrooms,
-      yearBuilt: req.body.yearBuilt,
-      nightlyRate: req.body.nightlyRate,
-      freshWaterAccess: req.body.freshWaterAccess,
-      electricity: req.body.electricity,
-      roadAccess: req.body.roadAccess,
-      description: req.body.description,
-      photos: req.body.photos
-    }]
+    // // This needs to be made into a loop for multiple stay locations
+    // stayOptions: [{
+    //   placeName: req.body.placeName,
+    //   indoorOutdoor: req.body.indoorOutdoor,
+    //   squareAcres: req.body.squareAcres,
+    //   bedrooms: req.body.bedrooms,
+    //   bathrooms: req.body.bathrooms,
+    //   yearBuilt: req.body.yearBuilt,
+    //   nightlyRate: req.body.nightlyRate,
+    //   freshWaterAccess: req.body.freshWaterAccess,
+    //   electricity: req.body.electricity,
+    //   roadAccess: req.body.roadAccess,
+    //   description: req.body.description,
+    //   photos: req.body.photos
+    // }]
   }, function(err, location){
     if(err) {
       sendJSONresponse(res, 400, err);
     } else {
       sendJSONresponse(res, 201, location);
+      console.log(location + " should now be in the database.")
     }
   });
 };
@@ -71,44 +73,45 @@ module.exports.locationsCreate = function(req, res) {
 
 // GET locations close to point
 module.exports.locationsListByDistance = function(req, res) {
-  var lng = parseFloat(req.query.lng);
-  var lat = parseFloat(req.query.lat);
-  var maxDistance = parseFloat(req.query.maxDistance);
-  var point = {
-    type: "Point",
-    coordinates: [lng, lat]
-  };
-  var geoOptions = {
-    spherical: true,
-    maxDistance: theEarth.getRadsFromDistance(maxDistance),
-    num: 10
-  };
-  if (!lng || !lat || !maxDistance) {
-    console.log('locationsListByDistance missing params');
-    sendJSONresponse(res, 404, {
-      "message": "lng, lat and maxDistance query parameters are all required"
-    });
-    return;
-  }
+  res.render("new-location")
+  // var lng = parseFloat(req.query.lng);
+  // var lat = parseFloat(req.query.lat);
+  // var maxDistance = parseFloat(req.query.maxDistance);
+  // var point = {
+  //   type: "Point",
+  //   coordinates: [lng, lat]
+  // };
+  // var geoOptions = {
+  //   spherical: true,
+  //   maxDistance: theEarth.getRadsFromDistance(maxDistance),
+  //   num: 10
+  // };
+  // if (!lng || !lat || !maxDistance) {
+  //   console.log('locationsListByDistance missing params');
+  //   sendJSONresponse(res, 404, {
+  //     "message": "lng, lat and maxDistance query parameters are all required"
+  //   });
+  //   return;
+  // }
   
-  Loc.geoNear(point, geoOptions, function(err, results, stats) {
-    var locations = [];
-    if (err){
-      sendJSONresponse(res, 404, err);
-    } else {
-      results.forEach(function(doc) {
-        locations.push({
-          distance: theEarth.getDistanceFromRads(doc.dis),
-          name: doc.obj.name,
-          address: doc.obj.address,
-          rating: doc.obj.rating,
-          factilities: doc.obj.facilities,
-          _id: doc.obj._id
-        });
-      });
-    sendJSONresponse(res, 200, locations);
-    }
-  });
+  // Loc.geoNear(point, geoOptions, function(err, results, stats) {
+  //   var locations = [];
+  //   if (err){
+  //     sendJSONresponse(res, 404, err);
+  //   } else {
+  //     results.forEach(function(doc) {
+  //       locations.push({
+  //         distance: theEarth.getDistanceFromRads(doc.dis),
+  //         name: doc.obj.name,
+  //         address: doc.obj.address,
+  //         rating: doc.obj.rating,
+  //         factilities: doc.obj.facilities,
+  //         _id: doc.obj._id
+  //       });
+  //     });
+  //   sendJSONresponse(res, 200, locations);
+  //   }
+  // });
 };
 
 

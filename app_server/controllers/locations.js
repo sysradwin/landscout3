@@ -3,7 +3,7 @@ var request = require("request");
 
 // Setting options to pull data from API
 var apiOptions = {
-    server: "https://landscout3-sysradmin.c9users.io/"
+    server: "http://localhost:3000/"
 };
 if (process.env.NODE_ENV === 'production'){
     console.log("Zach, you need to specify where the app is making API calls.");
@@ -120,49 +120,42 @@ module.exports.addLocation = function(req, res){
 // NEW LOCATION SEND
 module.exports.doAddLocation = function(req, res){
     var postdata = {
-        name: req.body.name,
-        address: req.body.address,
-        activities: req.body.activities.split(","),
-        lng: req.body.lng, 
-        lat: req.body.lat,
-        availableSeason: [{
-          openingDate: req.body.openingDate,
-          closingDate: req.body.closingDate
-        }],
-        // This needs to be made into a loop for multiple stay locations
-        stayOptions: [{
-          placeName: req.body.placeName,
-          indoorOutdoor: req.body.indoorOutdoor,
-          squareAcres: req.body.squareAcres,
-          bedrooms: req.body.bedrooms,
-          bathrooms: req.body.bathrooms,
-          yearBuilt: req.body.yearBuilt,
-          nightlyRate: req.body.nightlyRate,
-          freshWaterAccess: req.body.freshWaterAccess,
-          electricity: req.body.electricity,
-          roadAccess: req.body.roadAccess,
-          description: req.body.description,
-          photos: req.body.photos
-        }]
+        locationToAPI: req.body.name,
+        addressToAPI: req.body.address,
+        activitiesToAPI: req.body.activities,
+        coords: [parseFloat(req.body.lng), parseFloat(req.body.lat)],
+        openingDate: req.body.openingDate,
+        closingDate: req.body.closingDate
+        // // This needs to be made into a loop for multiple stay locations
+        // stayOptions: [{
+        //   placeName: req.body.placeName,
+        //   indoorOutdoor: req.body.indoorOutdoor,
+        //   squareAcres: req.body.squareAcres,
+        //   bedrooms: req.body.bedrooms,
+        //   bathrooms: req.body.bathrooms,
+        //   yearBuilt: req.body.yearBuilt,
+        //   nightlyRate: req.body.nightlyRate,
+        //   freshWaterAccess: req.body.freshWaterAccess,
+        //   electricity: req.body.electricity,
+        //   roadAccess: req.body.roadAccess,
+        //   description: req.body.description,
+        //   photos: req.body.photos
+        // }]
     }
-    var path = "api/locations/";
+
+
+    var path = "api/locations";
     var requestOptions = {
         url: apiOptions.server + path,
         method: "POST",
         json: postdata
     } 
-    
-    request(requestOptions, function(err, response, body){
-        if(response.statusCode === 201){
-            res.send("REQUEST WORKED")
-        } else if (response.statusCode === 400 && body.name && body.name === 'ValidationError'){
-            res.redirect('/location/new?err=val')
-        } else {
-                    _showError(req, res, response.statusCode)
+    console.log(requestOptions.url)
+    console.log(requestOptions.json)
 
-        }
+    request(requestOptions, function(err, response, body){
+      console.log(requestOptions)  
     })
-    
 }
 
 

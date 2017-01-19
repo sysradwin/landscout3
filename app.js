@@ -9,7 +9,7 @@ require('./api_server/models/db');
 
 
 var routes = require('./app_server/routes/index');
-var routesAPI = require("./api_server/routes/index");
+var routesAPI = require('./api_server/routes/index');
 var users = require('./app_server/routes/users');
 
 var app = express();
@@ -60,6 +60,11 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
+
+
+app.listen(3000, 'localhost', function(){
+    console.log("App listening on port 3000")
+})
 
 // This might be why the BIN file exists???
 module.exports = app;
