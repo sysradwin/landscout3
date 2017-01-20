@@ -3,18 +3,27 @@ extends layout
 block content
  .container
   .row
+   .container
+    .dateform.form(action="", method="POST")
+     input(type="text", name="zip", placeholder="Enter Zip")
+     input(type="text", name="checkIn", placeholder="Check In Date")
+     input(type="text", name="checkOut", placeholder="Check Out Date")
+     input(type="submit", value="Submit!")
+  .row
    .col-xs-12.col-md-4
-    button.btn.btn-primary(type='submit')
+    .homebutton.btn.btn-primary(type='submit')
      i.glyphicon.glyphicon-tree-conifer
-      |  Camping
+      |Camp
    .col-xs-12.col-md-4
-    button.btn.btn-primary(type='submit')
+    .homebutton.btn.btn-primary(type='submit')
      i.glyphicon.glyphicon-tree-conifer
-      |  Fishing
+      |Fish
    .col-xs-12.col-md-4
-    button.btn.btn-primary(type='submit')
+    .homebutton.btn.btn-primary(type='submit')
      i.glyphicon.glyphicon-tree-conifer
-      |  Hunting
+      |Hunt
+  .row
+
 
      
      

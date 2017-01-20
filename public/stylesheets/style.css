@@ -1,11 +1,29 @@
+body {
+	/*THE BODY PADDING HERE IS SO THE NAVBAR DOESNT HIDE STUFF*/
+	padding-top: 70px
+}
+
 .col-xs-12 {
-    border-left: 2px solid black;
-    border-right: 2px solid black;
+   /* border-left: 1px solid black;
+    border-right: 1px solid black;*/
+    border-bottom: 1px solid black;
     margin: 0 auto;
 }
 
+.homebutton {
+	background-color: green;
+	width: 300px;
+	height: 100px;
+	font-size: 50px;
+	padding-top: 15px;
+}
 
-
+.dateform {
+/*	border: 1px solid black;
+*/	margin: 40px;
+	text-align: center;
+	padding: 20px;
+}
 
 
 

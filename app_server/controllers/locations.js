@@ -44,27 +44,26 @@ var renderHomepage = function(req, res, responseBody) {
 };
 
 module.exports.homelist = function(req,res){
-    // var requestOptions, path;
-    // path = 'api/locations';
-    // requestOptions = {
-    //     url : apiOptions.server + path,
-    //     method: "GET",
-    //     json: {},
-    //     qs: {
-    //         lng: -0.9992599,
-    //         lat: 54.37895,
-    //         maxDistance: 30000000900
-    //     }
-    // };
-    //         console.log("Serving API data from " + apiOptions.server + path)
+    var requestOptions, path;
+    path = 'api/locations';
+    requestOptions = {
+        url : apiOptions.server + path,
+        method: "GET",
+        json: {},
+        qs: {
+            lng: -0.9992599,
+            lat: 54.37895,
+            maxDistance: 30000000900
+        }
+    };
+            console.log("Serving API data from " + apiOptions.server + path)
 
-    // request(requestOptions, function(err, response, body){
-    //     renderHomepage(req, res, body)
+    request(requestOptions, function(err, response, body){
+        renderHomepage(req, res, body)
         
-    //     console.log(requestOptions);
-    // });
+        console.log(requestOptions);
+    });
     
-    res.render("locations-list")
 
 };
 

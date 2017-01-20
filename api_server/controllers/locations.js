@@ -73,45 +73,44 @@ module.exports.locationsCreate = function(req, res) {
 
 // GET locations close to point
 module.exports.locationsListByDistance = function(req, res) {
-  res.render("new-location")
-  // var lng = parseFloat(req.query.lng);
-  // var lat = parseFloat(req.query.lat);
-  // var maxDistance = parseFloat(req.query.maxDistance);
-  // var point = {
-  //   type: "Point",
-  //   coordinates: [lng, lat]
-  // };
-  // var geoOptions = {
-  //   spherical: true,
-  //   maxDistance: theEarth.getRadsFromDistance(maxDistance),
-  //   num: 10
-  // };
-  // if (!lng || !lat || !maxDistance) {
-  //   console.log('locationsListByDistance missing params');
-  //   sendJSONresponse(res, 404, {
-  //     "message": "lng, lat and maxDistance query parameters are all required"
-  //   });
-  //   return;
-  // }
+  var lng = parseFloat(req.query.lng);
+  var lat = parseFloat(req.query.lat);
+  var maxDistance = parseFloat(req.query.maxDistance);
+  var point = {
+    type: "Point",
+    coordinates: [lng, lat]
+  };
+  var geoOptions = {
+    spherical: true,
+    maxDistance: theEarth.getRadsFromDistance(maxDistance),
+    num: 10
+  };
+  if (!lng || !lat || !maxDistance) {
+    console.log('locationsListByDistance missing params');
+    sendJSONresponse(res, 404, {
+      "message": "lng, lat and maxDistance query parameters are all required"
+    });
+    return;
+  }
   
-  // Loc.geoNear(point, geoOptions, function(err, results, stats) {
-  //   var locations = [];
-  //   if (err){
-  //     sendJSONresponse(res, 404, err);
-  //   } else {
-  //     results.forEach(function(doc) {
-  //       locations.push({
-  //         distance: theEarth.getDistanceFromRads(doc.dis),
-  //         name: doc.obj.name,
-  //         address: doc.obj.address,
-  //         rating: doc.obj.rating,
-  //         factilities: doc.obj.facilities,
-  //         _id: doc.obj._id
-  //       });
-  //     });
-  //   sendJSONresponse(res, 200, locations);
-  //   }
-  // });
+  Loc.geoNear(point, geoOptions, function(err, results, stats) {
+    var locations = [];
+    if (err){
+      sendJSONresponse(res, 404, err);
+    } else {
+      results.forEach(function(doc) {
+        locations.push({
+          distance: theEarth.getDistanceFromRads(doc.dis),
+          name: doc.obj.name,
+          address: doc.obj.address,
+          rating: doc.obj.rating,
+          facilities: doc.obj.facilities,
+          _id: doc.obj._id
+        });
+      });
+    sendJSONresponse(res, 200, locations);
+    }
+  });
 };
 
 
