@@ -1,5 +1,6 @@
 // this is the request module from npm that you needed to call the API.
 var request = require("request");
+var geocoder = require('geocoder');
 
 // Setting options to pull data from API
 var apiOptions = {
@@ -43,6 +44,30 @@ var renderHomepage = function(req, res, responseBody) {
     });
     // each location in locations....location is arbitrary for/each variable 
 };
+
+
+
+module.exports.doSearch = function(req, res){
+
+    var zip = req.body.zip;
+    console.log(zip)
+
+    geocoder.geocode( zip , function(err, data){
+        if (err){
+            console.log(err)
+        }
+        else {
+            // Dialing deep into geocode object from google otherwise you get empty objects
+            console.log(data.results[0].geometry.location)
+        }
+    })
+
+
+}
+
+
+
+
 
 module.exports.homelist = function(req,res){
     var requestOptions, path;
