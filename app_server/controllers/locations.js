@@ -31,6 +31,10 @@ var _showError = function(req, res, status){
 }
 
 
+
+
+
+
 // Variable to render homepage used in homelist function
 var renderHomepage = function(req, res, responseBody) {
     // gets passed through
@@ -46,9 +50,36 @@ var renderHomepage = function(req, res, responseBody) {
 };
 
 
+var queryLoc = function(req, res, LATcoordinates, LNGcoordinates) {
+    var requestOptions, path;
+    path = 'api/locations';
+
+    console.log(LATcoordinates + "  " + LNGcoordinates)
+    requestOptions = {
+        url : apiOptions.server + path,
+        method: "GET",
+        json: {},
+        qs: {
+            lng: LNGcoordinates,
+            lat: LATcoordinates,
+            maxDistance: 30000000000000
+            // lng: -0.9992599,
+            // lat: 54.37895,
+            // maxDistance: 30000000900
+        }
+    };
+            console.log("Serving API data from " + apiOptions.server + path)
+
+    request(requestOptions, function(err, response, body){
+        renderHomepage(req, res, body)
+        
+    });
+}
+
+
 
 module.exports.doSearch = function(req, res){
-
+    // This function will retrieve the geocoords from zipcode from Google's API.
     var zip = req.body.zip;
     console.log(zip)
 
@@ -58,11 +89,12 @@ module.exports.doSearch = function(req, res){
         }
         else {
             // Dialing deep into geocode object from google otherwise you get empty objects
-            console.log(data.results[0].geometry.location)
+            var LNGcoordinates = data.results[0].geometry.location.lng;
+            var LATcoordinates = data.results[0].geometry.location.lat;
+
+            queryLoc(req, res, LATcoordinates, LNGcoordinates)
         }
     })
-
-
 }
 
 
