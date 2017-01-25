@@ -36,6 +36,7 @@ module.exports.locationsCreate = function(req, res) {
   Loc.create({
     name: req.body.locationToAPI,
     address: req.body.addressToAPI,
+    zipcode: req.body.zipcodeToAPI,
     activities: req.body.activitiesToAPI.split(","),
     coords: req.body.coords,
     availableSeason: [{
@@ -104,7 +105,7 @@ module.exports.locationsListByDistance = function(req, res) {
           name: doc.obj.name,
           address: doc.obj.address,
           rating: doc.obj.rating,
-          facilities: doc.obj.facilities,
+          activities: doc.obj.activities,
           _id: doc.obj._id
         });
       });

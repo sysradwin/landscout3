@@ -32,15 +32,16 @@ var _showError = function(req, res, status){
 
 // Variable to render homepage used in homelist function
 var renderHomepage = function(req, res, responseBody) {
+    // gets passed through
+    console.log(responseBody)
     if (!(responseBody instanceof Array)){
         res.send("No location objects found in database")
     }
     res.render('locations-list', {
-        title: 'Landscout - GO POUND SAND',
+        title: 'Available Locations on Landscout',
         locations: responseBody
     });
     // each location in locations....location is arbitrary for/each variable 
-    console.log(responseBody)
 };
 
 module.exports.homelist = function(req,res){
@@ -61,9 +62,8 @@ module.exports.homelist = function(req,res){
     request(requestOptions, function(err, response, body){
         renderHomepage(req, res, body)
         
-        console.log(requestOptions);
     });
-    
+
 
 };
 
@@ -121,6 +121,7 @@ module.exports.doAddLocation = function(req, res){
     var postdata = {
         locationToAPI: req.body.name,
         addressToAPI: req.body.address,
+        zipcodeToAPI: req.body.zipcode,
         activitiesToAPI: req.body.activities,
         coords: [parseFloat(req.body.lng), parseFloat(req.body.lat)],
         openingDate: req.body.openingDate,

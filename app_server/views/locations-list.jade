@@ -22,55 +22,13 @@ block content
     .homebutton.btn.btn-primary(type='submit')
      i.glyphicon.glyphicon-tree-conifer
       |Hunt
-  .row
-
-
-     
-     
-     
-     
-     
-     
-     
-     
-    // .row
-    //     #mainJumbo.jumbotron
-    //         #shadowbox.col-xs-12
-    //           h1 Welcome to Landscout
-    //           h4 Bringing together private landowners with outdoor enthusiasts.
-    //               p 
-    //                 a.btn.btn-primary.btn-lg(href="#", role="button") Head on out
-
-    // #welcomeBanners.row
-    //     .col-xs-12.col-md-4
-    //         .thumbnail
-    //          h1 Scout
-    //           .glyphicon.glyphicon-tree-conifer
-    //            .caption
-    //             p Look for properties where owners have land available for you to hunt, fish, and camp!
-    //     .col-xs-12.col-md-4
-    //         .thumbnail
-    //          h1 Claim
-    //           .glyphicon.glyphicon-pushpin
-    //            .caption
-    //             p Choose a place that suits your needs, reserve a date, and ensure you have all proper tags and permits.
-    //     .col-xs-12.col-md-4
-    //         .thumbnail
-    //          h1 Share
-    //           .glyphicon.glyphicon-thumbs-up
-    //            .caption
-    //             p Share your experience with other Landscouts!
-    
-    // .container
-    //  .row
-    //     .col-xs-12.col-sm-8
-    //       .error= message
-    //       .row.list-group
-    //         // each location in locations
-    //         //   .col-xs-12.list-group-item
-    //         //     h4 
-    //         //       a(href="/location/#{location._id}")= location.name
-                  
-    //         //       span.badge.pull-right.badge-default= location.distance
-    //         //     p.address= location.address
-                
+ .container
+  each location in locations
+   .row
+    h1
+       = location.name
+    h5
+       = location.address
+    each activity in location.activities
+     span.activitylabel.label.label-default
+       = activity

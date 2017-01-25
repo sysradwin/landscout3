@@ -68,6 +68,7 @@ var locationSchema = new mongoose.Schema({
     //     min: 0,
     //     max: 5
     // },
+    zipcode: String,
     activities: [String],
     // Always store coordinates longitude, latitude order.
     coords: {
