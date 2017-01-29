@@ -5,7 +5,7 @@ block content
   .row
    .container
     form.dateform(action="/", method="POST")
-     input(type="text", name="zip", placeholder="Enter Zip")
+     input(ng-model="myInput", type="text", name="zip", placeholder="Enter Zip")
      input(type="date", name="checkIn", placeholder="Check In Date")
      input(type="date", name="checkOut", placeholder="Check Out Date")
      input(type="submit", value="Submit!")
@@ -13,7 +13,7 @@ block content
    .col-xs-12.col-md-4
     .homebutton.btn.btn-primary(type='submit')
      i.glyphicon.glyphicon-tree-conifer
-      |Camp
+      |{{ myInput }}
    .col-xs-12.col-md-4
     .homebutton.btn.btn-primary(type='submit')
      i.glyphicon.glyphicon-tree-conifer

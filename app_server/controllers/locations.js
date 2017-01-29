@@ -211,7 +211,7 @@ module.exports.doAddLocation = function(req, res){
 
 
     request(requestOptions, function(err, response, body){
-        
+
     })
 }
 

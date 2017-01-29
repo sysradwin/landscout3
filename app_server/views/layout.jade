@@ -1,11 +1,11 @@
 doctype html
-html
+html(ng-app='landscout')
   head
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     title= title
     link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
+  body(ng-controller='landscoutController')
   
   .navbar.navbar-default.navbar-fixed-top
      
@@ -25,3 +25,5 @@ html
 
     script(src='/javascripts/jquery-1.11.1.min.js')
     script(src='/bootstrap/js/bootstrap.min.js')
+    script(src='/angular/angular.min.js')
+    script(src='/angular/landscout.min.js')

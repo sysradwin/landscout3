@@ -80,23 +80,40 @@ module.exports.locationsListByDistance = function(req, res) {
   var lng = parseFloat(req.query.lng);
   var lat = parseFloat(req.query.lat);
   var maxDistance = parseFloat(req.query.maxDistance);
-  var dateSearch = req.query.dateSearch
-  var checkIN = req.query.chkin;
-  var checkOUT = req.query.chkout;
+
 
   var point = {
     type: "Point",
     coordinates: [lng, lat]
   };
 
+
+var whatDate = function(){
+    var dateSearch = req.query.dateSearch
+    var checkIN = req.query.chkin;
+    var checkOUT = req.query.chkout;
+      if(dateSearch === 'false'){
+          return;
+      } else {
+          return {openingDate: {$lte: new Date(checkIN)}, closingDate: {$gte: new Date(checkOUT)}}
+      }
+}
+
+// if(dateSearch === true){
+//   console.log("THERE IS A DATE SEARCH")
+//   whatDate = {openingDate: {$lte: new Date(checkIN)}, closingDate: {$gte: new Date(checkOUT)}}
+// } 
+// console.log(whatDate)
+
+
   var geoOptions = {
     spherical: true,
     maxDistance: theEarth.getRadsFromDistance(maxDistance),
     num: 10,
     // The query line is for all additional queries in geoNear
-    query: {openingDate: {$lte: new Date(checkIN)}, closingDate: {$gte: new Date(checkOUT)}}
+    query: whatDate()
   };
-
+console.log(geoOptions.query)
   if (!lng || !lat || !maxDistance) {
     console.log('locationsListByDistance missing params');
     sendJSONresponse(res, 404, {
@@ -104,6 +121,7 @@ module.exports.locationsListByDistance = function(req, res) {
     });
     return;
   }
+
 
   Loc.geoNear(point, geoOptions, function(err, results, stats) {
     var locations = [];
