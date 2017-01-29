@@ -16,11 +16,11 @@ var reviewSchema = new mongoose.Schema({
     }
 });
 
-var availableSeasonSchema = new mongoose.Schema({
-    openingDate: String,
-    closingDate: String,
+// var availableSeasonSchema = new mongoose.Schema({
+//     openingDate: Date,
+//     closingDate: Date,
 
-});
+// });
 
 var stayOptionsSchema = new mongoose.Schema({
         placeName: {
@@ -75,7 +75,8 @@ var locationSchema = new mongoose.Schema({
         type: [Number],
         index: '2dsphere',
     },
-    availableSeason: [availableSeasonSchema],
+    openingDate: Date,
+    closingDate: Date
     // stayOptions: [stayOptionsSchema],
     // reviews: [reviewSchema]
 });

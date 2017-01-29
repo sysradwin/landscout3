@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 var Loc = mongoose.model('Location');
+var moment = require("moment")
 
 // Reusable functions for making distance caluclations
 var theEarth = (function() {
@@ -39,10 +40,12 @@ module.exports.locationsCreate = function(req, res) {
     zipcode: req.body.zipcodeToAPI,
     activities: req.body.activitiesToAPI.split(","),
     coords: req.body.coords,
-    availableSeason: [{
-      openingDate: req.body.openingDate,
-      closingDate: req.body.closingDate
-    }],
+    openingDate: req.body.openingDate,
+    closingDate: req.body.closingDate
+    // availableSeason: [{
+    //   openingDate: req.body.openingDate,
+    //   closingDate: req.body.closingDate
+    // }],
     // // This needs to be made into a loop for multiple stay locations
     // stayOptions: [{
     //   placeName: req.body.placeName,
@@ -77,15 +80,23 @@ module.exports.locationsListByDistance = function(req, res) {
   var lng = parseFloat(req.query.lng);
   var lat = parseFloat(req.query.lat);
   var maxDistance = parseFloat(req.query.maxDistance);
+  var dateSearch = req.query.dateSearch
+  var checkIN = req.query.chkin;
+  var checkOUT = req.query.chkout;
+
   var point = {
     type: "Point",
     coordinates: [lng, lat]
   };
+
   var geoOptions = {
     spherical: true,
     maxDistance: theEarth.getRadsFromDistance(maxDistance),
-    num: 10
+    num: 10,
+    // The query line is for all additional queries in geoNear
+    query: {openingDate: {$lte: new Date(checkIN)}, closingDate: {$gte: new Date(checkOUT)}}
   };
+
   if (!lng || !lat || !maxDistance) {
     console.log('locationsListByDistance missing params');
     sendJSONresponse(res, 404, {
@@ -93,23 +104,29 @@ module.exports.locationsListByDistance = function(req, res) {
     });
     return;
   }
-  
+
   Loc.geoNear(point, geoOptions, function(err, results, stats) {
     var locations = [];
+
     if (err){
       sendJSONresponse(res, 404, err);
     } else {
       results.forEach(function(doc) {
-        locations.push({
-          distance: theEarth.getDistanceFromRads(doc.dis),
-          name: doc.obj.name,
-          address: doc.obj.address,
-          rating: doc.obj.rating,
-          activities: doc.obj.activities,
-          _id: doc.obj._id
-        });
+
+            locations.push({
+              distance: theEarth.getDistanceFromRads(doc.dis),
+              name: doc.obj.name,
+              address: doc.obj.address,
+              rating: doc.obj.rating,
+              activities: doc.obj.activities,
+              // availableSeason: doc.obj.availableSeason[0],
+              _id: doc.obj._id
+            });  
       });
-    sendJSONresponse(res, 200, locations);
+
+
+
+            sendJSONresponse(res, 200, locations)
     }
   });
 };

@@ -1,7 +1,7 @@
 // this is the request module from npm that you needed to call the API.
 var request = require("request");
 var geocoder = require('geocoder');
-
+var moment = require("moment")
 // Setting options to pull data from API
 var apiOptions = {
     server: "http://localhost:3000/"
@@ -38,7 +38,6 @@ var _showError = function(req, res, status){
 // Variable to render homepage used in homelist function
 var renderHomepage = function(req, res, responseBody) {
     // gets passed through
-    console.log(responseBody)
     if (!(responseBody instanceof Array)){
         res.send("No location objects found in database")
     }
@@ -49,12 +48,13 @@ var renderHomepage = function(req, res, responseBody) {
     // each location in locations....location is arbitrary for/each variable 
 };
 
-
-var queryLoc = function(req, res, LATcoordinates, LNGcoordinates) {
+// This function was created because I needed to reuse the get request for listing locations by coordinates
+// The first use case was for user inputting their zip code
+// The second use case was to render the default locations at the start screen.
+// The latter use case may only be acceptable for mobile versions.
+var queryLoc = function(req, res, LATcoordinates, LNGcoordinates, checkIn, checkOut) {
     var requestOptions, path;
     path = 'api/locations';
-
-    console.log(LATcoordinates + "  " + LNGcoordinates)
     requestOptions = {
         url : apiOptions.server + path,
         method: "GET",
@@ -62,10 +62,10 @@ var queryLoc = function(req, res, LATcoordinates, LNGcoordinates) {
         qs: {
             lng: LNGcoordinates,
             lat: LATcoordinates,
+            dateSearch: true,
+            chkin: checkIn,
+            chkout: checkOut,
             maxDistance: 30000000000000
-            // lng: -0.9992599,
-            // lat: 54.37895,
-            // maxDistance: 30000000900
         }
     };
             console.log("Serving API data from " + apiOptions.server + path)
@@ -81,7 +81,8 @@ var queryLoc = function(req, res, LATcoordinates, LNGcoordinates) {
 module.exports.doSearch = function(req, res){
     // This function will retrieve the geocoords from zipcode from Google's API.
     var zip = req.body.zip;
-    console.log(zip)
+    var checkIn = req.body.checkIn;
+    var checkOut = req.body.checkOut;
 
     geocoder.geocode( zip , function(err, data){
         if (err){
@@ -91,8 +92,7 @@ module.exports.doSearch = function(req, res){
             // Dialing deep into geocode object from google otherwise you get empty objects
             var LNGcoordinates = data.results[0].geometry.location.lng;
             var LATcoordinates = data.results[0].geometry.location.lat;
-
-            queryLoc(req, res, LATcoordinates, LNGcoordinates)
+            queryLoc(req, res, LATcoordinates, LNGcoordinates, checkIn, checkOut)
         }
     })
 }
@@ -102,6 +102,7 @@ module.exports.doSearch = function(req, res){
 
 
 module.exports.homelist = function(req,res){
+    
     var requestOptions, path;
     path = 'api/locations';
     requestOptions = {
@@ -109,9 +110,10 @@ module.exports.homelist = function(req,res){
         method: "GET",
         json: {},
         qs: {
-            lng: -0.9992599,
-            lat: 54.37895,
-            maxDistance: 30000000900
+            lng: -0.987,
+            dateSearch: false,
+            lat: 45.3432,
+            maxDistance: 30000000000000
         }
     };
             console.log("Serving API data from " + apiOptions.server + path)
@@ -120,7 +122,6 @@ module.exports.homelist = function(req,res){
         renderHomepage(req, res, body)
         
     });
-
 
 };
 
@@ -207,11 +208,10 @@ module.exports.doAddLocation = function(req, res){
         method: "POST",
         json: postdata
     } 
-    console.log(requestOptions.url)
-    console.log(requestOptions.json)
+
 
     request(requestOptions, function(err, response, body){
-      console.log(requestOptions)  
+        
     })
 }
 
