@@ -24,6 +24,7 @@ var theEarth = (function() {
 
 // USE THIS FUNCTION TO TEST THE CONTROLLERS AS YOU GO and to return all responses
 var sendJSONresponse = function(res, status, content) {
+  console.log(content)
   res.status(status);
   res.json(content);
 };
@@ -86,24 +87,20 @@ module.exports.locationsListByDistance = function(req, res) {
     type: "Point",
     coordinates: [lng, lat]
   };
+console.log("INCOMING API REQUEST")
+
+// var whatDate = function(){
+//     var dateSearch = req.query.dateSearch
+//     var checkIN = req.query.chkin;
+//     var checkOUT = req.query.chkout;
+//       if(dateSearch === 'false'){
+//           return;
+//       } else {
+//           return {openingDate: {$lte: new Date(checkIN)}, closingDate: {$gte: new Date(checkOUT)}}
+//       }
+// }
 
 
-var whatDate = function(){
-    var dateSearch = req.query.dateSearch
-    var checkIN = req.query.chkin;
-    var checkOUT = req.query.chkout;
-      if(dateSearch === 'false'){
-          return;
-      } else {
-          return {openingDate: {$lte: new Date(checkIN)}, closingDate: {$gte: new Date(checkOUT)}}
-      }
-}
-
-// if(dateSearch === true){
-//   console.log("THERE IS A DATE SEARCH")
-//   whatDate = {openingDate: {$lte: new Date(checkIN)}, closingDate: {$gte: new Date(checkOUT)}}
-// } 
-// console.log(whatDate)
 
 
   var geoOptions = {
@@ -111,7 +108,7 @@ var whatDate = function(){
     maxDistance: theEarth.getRadsFromDistance(maxDistance),
     num: 10,
     // The query line is for all additional queries in geoNear
-    query: whatDate()
+    // query: whatDate()
   };
 console.log(geoOptions.query)
   if (!lng || !lat || !maxDistance) {

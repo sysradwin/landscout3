@@ -36,14 +36,14 @@ var _showError = function(req, res, status){
 
 
 // Variable to render homepage used in homelist function
-var renderHomepage = function(req, res, responseBody) {
+var renderHomepage = function(req, res) {
     // gets passed through
-    if (!(responseBody instanceof Array)){
-        res.send("No location objects found in database")
-    }
+    // if (!(responseBody instanceof Array)){
+    //     res.send("No location objects found in database")
+    // }
     res.render('locations-list', {
         title: 'Available Locations on Landscout',
-        locations: responseBody
+        // locations: responseBody
     });
     // each location in locations....location is arbitrary for/each variable 
 };
@@ -103,25 +103,25 @@ module.exports.doSearch = function(req, res){
 
 module.exports.homelist = function(req,res){
     
-    var requestOptions, path;
-    path = 'api/locations';
-    requestOptions = {
-        url : apiOptions.server + path,
-        method: "GET",
-        json: {},
-        qs: {
-            lng: -0.987,
-            dateSearch: false,
-            lat: 45.3432,
-            maxDistance: 30000000000000
-        }
-    };
-            console.log("Serving API data from " + apiOptions.server + path)
+    // var requestOptions, path;
+    // path = 'api/locations';
+    // requestOptions = {
+    //     url : apiOptions.server + path,
+    //     method: "GET",
+    //     json: {},
+    //     qs: {
+    //         lng: -0.987,
+    //         dateSearch: false,
+    //         lat: 45.3432,
+    //         maxDistance: 30000000000000
+    //     }
+    // };
+    //         console.log("Serving API data from " + apiOptions.server + path)
 
-    request(requestOptions, function(err, response, body){
-        renderHomepage(req, res, body)
-        
-    });
+    // request(requestOptions, function(err, response, body){
+        renderHomepage(req, res)
+            
+        // });
 
 };
 
