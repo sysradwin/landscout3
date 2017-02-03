@@ -5,26 +5,27 @@ block content
   .row
    .container
     form.dateform(action="/", method="POST")
+     h1 {{message}}
      input(ng-model="myInput", type="text", name="zip", placeholder="Enter Zip")
      input(type="date", name="checkIn", placeholder="Check In Date")
      input(type="date", name="checkOut", placeholder="Check Out Date")
      input(type="submit", value="Submit!")
   .row
    .col-xs-12.col-md-4
-    .homebutton.btn.btn-primary(type='submit')
+    .homebutton.btn.btn-primary(ng-click="listFilter = {activity: camps}")
      i.glyphicon.glyphicon-tree-conifer
       |Camp
    .col-xs-12.col-md-4
-    .homebutton.btn.btn-primary(type='submit')
+    .homebutton.btn.btn-primary(ng-click="listFilter = {activity: fishes}")
      i.glyphicon.glyphicon-tree-conifer
       |Fish
    .col-xs-12.col-md-4
-    .homebutton.btn.btn-primary(type='submit')
+    .homebutton.btn.btn-primary(ng-click="listFilter = {activity: hunts}")
      i.glyphicon.glyphicon-tree-conifer
       |Hunt
  .container
    .row.list-group
-    .col-xs-12.list-group-item(ng-repeat="location in data.locations")
+    .col-xs-12.list-group-item(ng-repeat="location in data | filter:listFilter")
       h1 {{location.name}}
       h5
         {{location.address}}
